@@ -408,7 +408,6 @@ pub mod formats {
     #[cfg(feature = "json")]
     mod json {
         use super::*;
-        use bytes::Buf;
 
         /// JSON codec using [serde_json](https://docs.rs/serde_json) crate.
         #[cfg_attr(docsrs, doc(cfg(feature = "json")))]
@@ -429,7 +428,7 @@ pub mod formats {
             type Error = serde_json::Error;
 
             fn deserialize(self: Pin<&mut Self>, src: &BytesMut) -> Result<Item, Self::Error> {
-                serde_json::from_reader(std::io::Cursor::new(src).reader())
+                serde_json::from_slice(src)
             }
         }
 
